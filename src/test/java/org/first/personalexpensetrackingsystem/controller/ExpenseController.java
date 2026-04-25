@@ -2,9 +2,13 @@ package org.first.personalexpensetrackingsystem.controller;
 
 import org.first.personalexpensetrackingsystem.model.Expense;
 import org.first.personalexpensetrackingsystem.service.ExpenseService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @Controller
 public class ExpenseController {
@@ -15,10 +19,22 @@ public class ExpenseController {
         this.service = service;
     }
 
-    // HOME PAGE
+    // HOME PAGE (UPDATED FOR PAGINATION)
     @GetMapping("/")
-    public String viewHomePage(Model model) {
-        model.addAttribute("expenses", service.getAllExpenses());
+    public String viewHomePage(Model model,
+                               @RequestParam(defaultValue = "0") int page) {
+
+        int pageSize = 30;
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        Page<Expense> expensePage = service.getAllExpenses(pageable);
+
+        model.addAttribute("expenses", expensePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", expensePage.getTotalPages());
+        model.addAttribute("pageSize", pageSize);
+
         return "index";
     }
 
@@ -49,7 +65,6 @@ public class ExpenseController {
 
         Expense expense = service.getExpenseById(id);
 
-        // IMPORTANT: prevent null crash
         if (expense == null) {
             return "redirect:/";
         }
@@ -57,4 +72,6 @@ public class ExpenseController {
         model.addAttribute("expense", expense);
         return "form";
     }
+    //financial dashboard
+
 }

@@ -12,7 +12,7 @@ public class Expense {
 
     private String title;
     private String category;
-    private double amount;
+    private int amount;
     private Double unitCost;
     private LocalDate date;
     private String description;
@@ -20,7 +20,7 @@ public class Expense {
 
     public Expense() {}
 
-    public Expense(String title, String category, double amount,Double unitCost,LocalDate date, String description) {
+    public Expense(String title, String category, int amount,Double unitCost,LocalDate date, String description) {
         this.title = title;
         this.category = category;
         this.amount = amount;
@@ -31,6 +31,9 @@ public class Expense {
 
     // Getters & Setters
     public Long getId() { return id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -38,8 +41,8 @@ public class Expense {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
 
-    public double getAmount() { return amount; }
-    public void setAmount(double amount) { this.amount = amount; }
+    public int getAmount() { return amount; }
+    public void setAmount(int amount) { this.amount = amount; }
 
     public Double getUnitCost() { return unitCost; }
     public void setUnitCost(Double unitCost) { this.unitCost = unitCost; }
@@ -50,4 +53,9 @@ public class Expense {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public Double getTotal() {
+        if (unitCost == null) return 0.0;
+        return amount * unitCost;
+    }
 }
