@@ -13,7 +13,7 @@
     <form th:action="@{/save}" th:object="${expense}" method="post">
 
         <input type="hidden" th:field="*{id}" />
-
+        <input type="hidden" name="page" th:value="${page}" />
         <input type="text" th:field="*{title}" placeholder="Title"/>
         <input type="text" th:field="*{category}" placeholder="Category"/>
         <input type="number" th:field="*{amount}" placeholder="Amount"/>

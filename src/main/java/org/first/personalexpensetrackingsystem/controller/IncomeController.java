@@ -17,25 +17,26 @@ public class IncomeController {
 
     @PostMapping("/income/save")
     public String saveIncome(
-            @RequestParam int month,
+            @RequestParam(required = false) Integer month,
             @RequestParam int year,
             @RequestParam Double amount
     ) {
 
-        // 1. Check if income already exists for this month/year
+        // SAFETY: fallback if month is missing (prevents 400 error)
+        if (month == null) {
+            month = 1;
+        }
+
         Income existing = incomeService.getIncome(year, month);
 
         if (existing != null) {
-            // Update existing income
             existing.setAmount(amount);
             incomeService.saveIncome(existing);
         } else {
-            // Create new income
             Income income = new Income(year, month, amount);
             incomeService.saveIncome(income);
         }
 
-        // 2. Redirect back to same dashboard month/year
         return "redirect:/dashboard?month=" + month + "&year=" + year;
     }
 }

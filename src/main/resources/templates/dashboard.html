@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Finance Dashboard</title>
-
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -10,9 +9,10 @@
 
 <h2 class="page-title">Finance Dashboard</h2>
 
-<!--   FILTER + INCOME   -->
+<!-- FILTERS -->
 <div class="table-container">
 
+    <!-- MONTH FILTER -->
     <form th:action="@{/dashboard}" method="get">
 
         <label>Month:</label>
@@ -22,99 +22,192 @@
         <input type="number" name="year" th:value="${year}" required>
 
         <button type="submit">View</button>
-
     </form>
 
     <br/>
 
-    <form th:action="@{/income/save}" method="post">
+    <!-- YEAR FILTER -->
+    <form th:action="@{/dashboard}" method="get">
 
-        <input type="hidden" name="month" th:value="${month}">
-        <input type="hidden" name="year" th:value="${year}">
+        <input type="hidden" name="yearly" value="true">
 
-        <label>Set Income:</label>
-        <input type="number" step="0.01" name="amount" placeholder="Enter income" required>
+        <label>Year Only:</label>
+        <input type="number" name="year" th:value="${year}" required>
 
-        <button type="submit">Save Income</button>
-
+        <button type="submit">View Year</button>
     </form>
 
 </div>
 
-<!--SUMMARY CARD -->
-<div class="table-container">
+<!-- ================= MONTH VIEW ================= -->
+<div th:if="${yearOnly == false}">
 
-    <div class="summary-cards">
+    <div class="table-container">
 
-        <div class="card ">
-            <h3>Total Income</h3>
-            <p th:text="${totalIncome} + ' FRW'"></p>
-        </div>
+        <div class="summary-cards">
 
-        <div class="card ">
-            <h3>Total Expenses</h3>
-            <p th:text="${totalExpenses} + ' FRW'"></p>
-        </div>
+            <div class="card">
+                <h3>Total Income</h3>
+                <p th:text="${totalIncome} + ' FRW'"></p>
+            </div>
 
-        <div class="card ">
-            <h3>Balance</h3>
-            <p th:text="${balance} + ' FRW'"
-               th:style="${balance >= 0} ? 'color:green;' : 'color:red;'">
-            </p>
+            <div class="card">
+                <h3>Total Expenses</h3>
+                <p th:text="${totalExpenses} + ' FRW'"></p>
+            </div>
+
+            <div class="card">
+                <h3>Balance</h3>
+                <p th:text="${balance} + ' FRW'"
+                   th:style="${balance >= 0} ? 'color:green;' : 'color:red;'"></p>
+            </div>
+
         </div>
 
     </div>
+
+    <div class="table-container">
+
+        <h3>Expenses for Selected Month</h3>
+
+        <table border="1">
+
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Unit Cost</th>
+                <th>Total</th>
+                <th>Date</th>
+            </tr>
+
+            <tr th:each="expense : ${expenses}">
+                <td th:text="${expense.title}"></td>
+                <td th:text="${expense.category}"></td>
+                <td th:text="${expense.amount}"></td>
+                <td th:text="${expense.unitCost}"></td>
+                <td th:text="${expense.amount * expense.unitCost}"></td>
+                <td th:text="${expense.date}"></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Monthly Chart</h3>
+    <div style="margin-top: 30px;">
+        <canvas id="financeChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script th:inline="javascript">
+        window.income = [[${totalIncome}]];
+        window.expenses = [[${totalExpenses}]];
+    </script>
+
+    <script src="/js/app.js"></script>
+
 </div>
 
-<!-- EXPENSE TABLE -->
-<div class="table-container">
+<!-- ================= YEAR VIEW ================= -->
+<div th:if="${yearOnly == true}">
 
-    <h3>Expenses for Selected Month</h3>
+    <div class="table-container">
 
-    <table border="1">
+        <div class="summary-cards">
 
-        <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Unit Cost</th>
-            <th>Total</th>
-            <th>Date</th>
-        </tr>
+            <div class="card">
+                <h3>Total Income</h3>
+                <p th:text="${totalIncome} + ' FRW'"></p>
+            </div>
 
-        <tr th:each="expense : ${expenses}">
-            <td th:text="${expense.title}"></td>
-            <td th:text="${expense.category}"></td>
-            <td th:text="${expense.amount}"></td>
-            <td th:text="${expense.unitCost}"></td>
-            <td th:text="${expense.amount * expense.unitCost}"></td>
-            <td th:text="${expense.date}"></td>
-        </tr>
+            <div class="card">
+                <h3>Total Expenses</h3>
+                <p th:text="${totalExpenses} + ' FRW'"></p>
+            </div>
 
-    </table>
+            <div class="card">
+                <h3>Balance</h3>
+                <p th:text="${balance} + ' FRW'"
+                   th:style="${balance >= 0} ? 'color:green;' : 'color:red;'"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="table-container">
+
+        <h3>Yearly Summary</h3>
+
+        <table border="1">
+
+            <tr>
+                <th>Month</th>
+                <th>Income</th>
+                <th>Expenses</th>
+                <th>Balance</th>
+            </tr>
+
+            <tr th:each="i : ${#numbers.sequence(1,12)}">
+
+                <td th:text="${i}"></td>
+                <td th:text="${incomePerMonth[i-1]}"></td>
+                <td th:text="${expensePerMonth[i-1]}"></td>
+                <td th:text="${incomePerMonth[i-1] - expensePerMonth[i-1]}"></td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <h3>Yearly Chart</h3>
+
+    <div style="margin-top: 30px;">
+        <canvas id="yearChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script th:inline="javascript">
+
+        const incomeData = /*[[${incomePerMonth}]]*/ [];
+        const expenseData = /*[[${expensePerMonth}]]*/ [];
+
+        new Chart(document.getElementById("yearChart"), {
+            type: "line",
+            data: {
+                labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                datasets: [
+                    {
+                        label: "Income",
+                        data: incomeData,
+                        borderColor: "green",
+                        fill: false
+                    },
+                    {
+                        label: "Expenses",
+                        data: expenseData,
+                        borderColor: "red",
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                tension: 0.3
+            }
+        });
+
+    </script>
 
 </div>
 
-<!--CHART-->
-<h3>Expenses-Income chart for Selected Month</h3>
-<div style="margin-top: 30px;">
-    <canvas id="financeChart"></canvas>
-</div>
-
-<!--  SCRIPTS   -->
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script th:inline="javascript">
-    window.income = [[${totalIncome}]];
-    window.expenses = [[${totalExpenses}]];
-</script>
-
-<script src="/js/app.js"></script>
-
-<!--   BACK   -->
+<!-- BACK -->
 <div style="margin-top:20px;">
-    <a th:href="@{/}"> Back to Expenses</a>
+    <a th:href="@{/(page=${page})}"> Back to Expenses</a>
 </div>
 
 </body>

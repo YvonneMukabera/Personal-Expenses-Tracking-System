@@ -38,25 +38,40 @@ public class ExpenseController {
     }
 
     @GetMapping("/new")
-    public String showCreateForm(Model model) {
+    public String showCreateForm(Model model,
+                                 @RequestParam(required = false, defaultValue = "0") int page) {
+
         model.addAttribute("expense", new Expense());
+        model.addAttribute("page", page);
+
         return "form";
     }
 
+    // SAVE (ADD + UPDATE) → RETURN TO SAME PAGE
     @PostMapping("/save")
-    public String saveExpense(@ModelAttribute Expense expense) {
+    public String saveExpense(@ModelAttribute Expense expense,
+                              @RequestParam(required = false, defaultValue = "0") int page) {
+
         service.saveExpense(expense);
-        return "redirect:/";
+
+        return "redirect:/?page=" + page;
     }
 
+    // DELETE → RETURN TO SAME PAGE
     @GetMapping("/delete/{id}")
-    public String deleteExpense(@PathVariable Long id) {
+    public String deleteExpense(@PathVariable Long id,
+                                @RequestParam(required = false, defaultValue = "0") int page) {
+
         service.deleteExpense(id);
-        return "redirect:/";
+
+        return "redirect:/?page=" + page;
     }
 
+    // EDIT → KEEP PAGE CONTEXT
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Long id,
+                               @RequestParam(required = false, defaultValue = "0") int page,
+                               Model model) {
 
         Expense expense = service.getExpenseById(id);
 
@@ -65,6 +80,8 @@ public class ExpenseController {
         }
 
         model.addAttribute("expense", expense);
+        model.addAttribute("page", page);
+
         return "form";
     }
 }

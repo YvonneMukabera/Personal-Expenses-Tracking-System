@@ -17,13 +17,11 @@ public class ExpenseService {
         this.repository = repository;
     }
 
-    // ===================== PAGINATED VERSION (USED IN CONTROLLER) =====================
+    // PAGINATED VERSION
     public Page<Expense> getAllExpenses(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    // ===================== LEGACY SUPPORT (IMPORTANT FIX) =====================
-    // prevents old code from breaking anywhere else in project
     public List<Expense> getAllExpenses() {
         return repository.findAll();
     }
@@ -32,7 +30,31 @@ public class ExpenseService {
         return repository.findById(id).orElse(null);
     }
 
+    //  FIXED SAVE LOGIC
     public Expense saveExpense(Expense expense) {
+
+        if (expense.getId() != null) {
+
+            Expense existing = repository.findById(expense.getId()).orElse(null);
+
+            if (existing != null) {
+
+                existing.setTitle(expense.getTitle());
+                existing.setCategory(expense.getCategory());
+                existing.setAmount(expense.getAmount());
+                existing.setUnitCost(expense.getUnitCost());
+                existing.setDescription(expense.getDescription());
+
+                // IMPORTANT FIX: keep old date if new one is null
+                if (expense.getDate() != null) {
+                    existing.setDate(expense.getDate());
+                }
+
+                return repository.save(existing);
+            }
+        }
+
+        // NEW EXPENSE
         return repository.save(expense);
     }
 

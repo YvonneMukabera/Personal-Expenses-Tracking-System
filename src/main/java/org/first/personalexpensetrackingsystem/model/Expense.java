@@ -24,9 +24,15 @@ public class Expense {
 
     public Expense() {}
 
+    // FIX ADDED
     public Long getId() {
         return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public String getTitle() {
         return title;
