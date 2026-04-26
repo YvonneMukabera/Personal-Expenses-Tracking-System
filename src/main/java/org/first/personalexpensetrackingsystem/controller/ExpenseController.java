@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @Controller
 public class ExpenseController {
@@ -19,7 +18,7 @@ public class ExpenseController {
         this.service = service;
     }
 
-    // HOME PAGE (UPDATED FOR PAGINATION)
+    // HOME PAGE WITH PAGINATION
     @GetMapping("/")
     public String viewHomePage(Model model,
                                @RequestParam(defaultValue = "0") int page) {
@@ -38,28 +37,24 @@ public class ExpenseController {
         return "index";
     }
 
-    // SHOW ADD FORM
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("expense", new Expense());
         return "form";
     }
 
-    // SAVE (CREATE + UPDATE)
     @PostMapping("/save")
     public String saveExpense(@ModelAttribute Expense expense) {
         service.saveExpense(expense);
         return "redirect:/";
     }
 
-    // DELETE
     @GetMapping("/delete/{id}")
     public String deleteExpense(@PathVariable Long id) {
         service.deleteExpense(id);
         return "redirect:/";
     }
 
-    // SHOW EDIT FORM
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
@@ -72,6 +67,4 @@ public class ExpenseController {
         model.addAttribute("expense", expense);
         return "form";
     }
-    //financial dashboard
-
 }

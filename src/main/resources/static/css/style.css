@@ -86,7 +86,7 @@ a {
 
 /* optional: hover effect */
 a:hover {
-    color: darkblue;
+    color: #001509;
     text-decoration: none;
 }
 .page-title {
@@ -163,4 +163,70 @@ a:hover {
 .card h3 {
     margin-bottom: 10px;
 }
+/*for authentication */
 
+.auth-body {
+    background: linear-gradient(135deg, #1e323e, #3b5268);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.auth-container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 350px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.logo-box {
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 240px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 10px;
+    background: #4facfe;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.auth-form button:hover {
+    background: #00c6ff;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.auth-link {
+    margin-top: 10px;
+    font-size: 14px;
+}
