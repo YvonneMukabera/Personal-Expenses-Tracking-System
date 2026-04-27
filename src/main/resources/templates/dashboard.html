@@ -39,7 +39,7 @@
 
 </div>
 
-<!-- ================= MONTH VIEW ================= -->
+<!--  MONTH VIEW   -->
 <div th:if="${yearOnly == false}">
 
     <div class="table-container">
@@ -73,6 +73,7 @@
         <table border="1">
 
             <tr>
+                <th>No</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Amount</th>
@@ -81,7 +82,8 @@
                 <th>Date</th>
             </tr>
 
-            <tr th:each="expense : ${expenses}">
+            <tr th:each="expense, iterStat : ${expenses}">
+                <td th:text="${iterStat.index + 1}"></td>
                 <td th:text="${expense.title}"></td>
                 <td th:text="${expense.category}"></td>
                 <td th:text="${expense.amount}"></td>
