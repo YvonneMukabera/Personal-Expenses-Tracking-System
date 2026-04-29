@@ -5,7 +5,29 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<!-- SIDEBAR (ONLY NEW PART) -->
+<div class="sidebar">
+        <div class="sdbr">
+            <!--     <h3 class="sidebar-title">Menu</h3> -->
+            <a th:href="@{/(page=${page})}" class="sidebar-link">
+                Expenses
+            </a>
 
+            <a th:href="@{/dashboard}" class="sidebar-link">
+                Dashboard
+            </a>
+
+            <!-- ADD EXPENSE -->
+            <a th:href="@{/new(page=${currentPage})}" class="sidebar-link active">
+                Add Expense
+            </a>
+            <a th:href="@{/about}"
+               class="sidebar-link">
+                About
+            </a>
+        </div>
+
+</div>
 <h2 class="page-title">Add Expense</h2>
 
 <div class="form-container">

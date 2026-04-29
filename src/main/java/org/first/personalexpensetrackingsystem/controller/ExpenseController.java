@@ -84,4 +84,9 @@ public class ExpenseController {
 
         return "form";
     }
+
+    @GetMapping("/about")
+    public String showAboutPage() {
+        return "about"; // This matches your templates/about.html file name
+    }
 }

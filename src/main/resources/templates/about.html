@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>About - Expense Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sdbr">
+            <a th:href="@{/(page=${currentPage})}" class="sidebar-link">Expenses</a>
+            <a th:href="@{/dashboard}" class="sidebar-link">Dashboard</a>
+            <a th:href="@{/new(page=${currentPage})}" class="sidebar-link">Add Expense</a>
+            <a th:href="@{/about}" class="sidebar-link active">About</a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT (With specific About class) -->
+    <div class="main-content about-page-main">
+
+        <h2 class="page-title">About the System</h2>
+
+        <!-- Wrap content in a div that grows to fill space -->
+        <div class="about-content-area">
+            <div class="table-container about-container">
+                <!-- CARD 1 -->
+                <div class="card">
+                    <h3>System Overview</h3>
+                    <ul class="about-list">
+                        <li>• <strong>Purpose:</strong> Centralized tracking for daily financial transactions.</li>
+                        <li>• <strong>Goal:</strong> Monitor spending habits and maintain a healthy balance.</li>
+                        <li>• <strong>Architecture:</strong> Powered by Spring Boot 3.x and Spring Data JPA.</li>
+                        <li>• <strong>UI Engine:</strong> Dynamic server-side rendering via Thymeleaf.</li>
+                    </ul>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="card">
+                    <h3>Core Capabilities</h3>
+                    <ul class="about-list">
+                        <li>• <strong>Data Management:</strong> Full CRUD operations (Add, View, Edit, Delete).</li>
+                        <li>• <strong>Visualization:</strong> Real-time financial charts powered by Chart.js.</li>
+                        <li>• <strong>Efficiency:</strong> Integrated pagination for fast record browsing.</li>
+                        <li>• <strong>Calculations:</strong> Automatic unit-cost and total balance aggregation.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER: Sticks to sidebar, right, and bottom -->
+        <footer class="about-footer">
+            <p>Personal Expense Tracking System | <span id="systemTime"></span></p>
+            <div class="contact-links">
+                Contact us: <a href="mailto:mukabera255@gmail.com" class="plain-link">via our email</a>
+                <span class="sep">|</span>
+                or <a href="https://wa.me/250793835394" class="plain-link">send your message via WhatsApp</a>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
