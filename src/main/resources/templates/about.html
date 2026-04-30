@@ -1,66 +1,126 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>About - Expense Tracker</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>About - Personal Expense Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <div class="layout">
-
-    <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="sdbr">
-            <a th:href="@{/(page=${currentPage})}" class="sidebar-link">Expenses</a>
-            <a th:href="@{/dashboard}" class="sidebar-link">Dashboard</a>
-            <a th:href="@{/new(page=${currentPage})}" class="sidebar-link">Add Expense</a>
-            <a th:href="@{/about}" class="sidebar-link active">About</a>
+        <div class="user-profile-box">
+            <div class="avatar-circle"
+                 th:text="${#authorization.expression('isAuthenticated()')} ? ${#strings.substring(#authentication.name,0,1).toUpperCase()} : 'U'">U</div>
+            <div class="user-details">
+            <span class="user-name-label"
+                  th:text="${#authorization.expression('isAuthenticated()')} ? ${#authentication.name} : 'Guest'">User</span>
+                <span class="user-role">Member</span>
+            </div>
+        </div>
+        <nav class="sdbr">
+            <a th:href="@{/}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
+            <a th:href="@{/dashboard}" class="sidebar-link" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a th:href="@{/new(returnUrl=${currentUrl})}" class="sidebar-link" th:classappend="${activePage == 'new' ? 'active' : ''}">Add Expense</a>
+            <a th:href="@{/about}" class="sidebar-link" th:classappend="${activePage == 'about' ? 'active' : ''}">About</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <form th:action="@{/logout}" method="post"><button type="submit" class="logout-action-btn">Sign Out</button></form>
         </div>
     </div>
+    <div class="main-content">
+        <h2 class="page-title">About This System</h2>
 
-    <!-- MAIN CONTENT (With specific About class) -->
-    <div class="main-content about-page-main">
-
-        <h2 class="page-title">About the System</h2>
-
-        <!-- Wrap content in a div that grows to fill space -->
-        <div class="about-content-area">
-            <div class="table-container about-container">
-                <!-- CARD 1 -->
-                <div class="card">
-                    <h3>System Overview</h3>
-                    <ul class="about-list">
-                        <li>• <strong>Purpose:</strong> Centralized tracking for daily financial transactions.</li>
-                        <li>• <strong>Goal:</strong> Monitor spending habits and maintain a healthy balance.</li>
-                        <li>• <strong>Architecture:</strong> Powered by Spring Boot 3.x and Spring Data JPA.</li>
-                        <li>• <strong>UI Engine:</strong> Dynamic server-side rendering via Thymeleaf.</li>
-                    </ul>
+        <div class="about-grid animate-fadeIn">
+            <div class="card about-card about-main-card">
+                <span class="section-kicker">Smart Personal Finance</span>
+                <h3>Track income, spending, and balance in FRW with confidence</h3>
+                <p class="about-lead">
+                    This system gives users a clear, secure way to record expenses, manage monthly income,
+                    and compare financial performance across months and years.
+                </p>
+                <div class="data-chip-row">
+                    <span class="data-chip">Expenses</span>
+                    <span class="data-chip">Income</span>
+                    <span class="data-chip">Dashboard</span>
+                    <span class="data-chip">FRW</span>
                 </div>
+            </div>
 
-                <!-- CARD 2 -->
-                <div class="card">
-                    <h3>Core Capabilities</h3>
-                    <ul class="about-list">
-                        <li>• <strong>Data Management:</strong> Full CRUD operations (Add, View, Edit, Delete).</li>
-                        <li>• <strong>Visualization:</strong> Real-time financial charts powered by Chart.js.</li>
-                        <li>• <strong>Efficiency:</strong> Integrated pagination for fast record browsing.</li>
-                        <li>• <strong>Calculations:</strong> Automatic unit-cost and total balance aggregation.</li>
-                    </ul>
+            <div class="card about-card">
+                <h3>Project Scope</h3>
+                <ul class="about-list">
+                    <li>Secure account registration and login.</li>
+                    <li>Expense records with title, category, quantity, unit cost, date, and total.</li>
+                    <li>Monthly and yearly dashboard filters with histogram charts.</li>
+                    <li>Income, expenses, and balance summaries in Rwandan francs.</li>
+                </ul>
+            </div>
+
+            <div class="card about-card">
+                <h3>Database Structure</h3>
+                <p class="about-muted">The active backend model tables are aligned with the project architecture.</p>
+                <div class="table-responsive">
+                    <table class="modern-table compact-table">
+                        <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Table</th>
+                            <th>Purpose</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-bold">User</td>
+                            <td>users</td>
+                            <td>Stores login and profile details.</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">Expense</td>
+                            <td>expense</td>
+                            <td>Stores spending records linked to a user.</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">Income</td>
+                            <td>income</td>
+                            <td>Stores monthly income linked to a user.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card about-card">
+                <h3>Project Team & Support</h3>
+                <p class="about-muted">
+                    The system is maintained by a small team focused on reliable expense tracking,
+                    clean financial summaries, and practical support for users.
+                </p>
+                <div class="contact-format">
+                    <div class="contact-row">
+                        <span>Owners</span>
+                        <strong>Yvonne and Enock</strong>
+                    </div>
+                    <div class="contact-row">
+                        <span>Email</span>
+                        <strong>mukabera255@gmail.com</strong>
+                    </div>
+                    <div class="contact-row">
+                        <span>Contact</span>
+                        <strong>+250 793 835 394</strong>
+                    </div>
+                    <div class="contact-row">
+                        <span>Office hours</span>
+                        <strong>Monday to Friday, 9:00 AM - 5:00 PM</strong>
+                    </div>
+                    <div class="contact-row contact-message">
+                        <span>Support note</span>
+                        <strong>Include your name, the page affected, and a short description of your request.</strong>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- FOOTER: Sticks to sidebar, right, and bottom -->
-        <footer class="about-footer">
-            <p>Personal Expense Tracking System | <span id="systemTime"></span></p>
-            <div class="contact-links">
-                Contact us: <a href="mailto:mukabera255@gmail.com" class="plain-link">via our email</a>
-                <span class="sep">|</span>
-                or <a href="https://wa.me/250793835394" class="plain-link">send your message via WhatsApp</a>
-            </div>
-        </footer>
     </div>
 </div>
-
-<script th:src="@{/js/app.js}"></script>
 </body>
 </html>

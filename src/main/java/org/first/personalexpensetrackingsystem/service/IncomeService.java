@@ -1,28 +1,24 @@
 package org.first.personalexpensetrackingsystem.service;
 
 import org.first.personalexpensetrackingsystem.model.Income;
+import org.first.personalexpensetrackingsystem.model.User;
 import org.first.personalexpensetrackingsystem.repository.IncomeRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class IncomeService {
 
-    private final IncomeRepository repo;
+    private final IncomeRepository incomeRepository;
 
-    public IncomeService(IncomeRepository repo) {
-        this.repo = repo;
+    public IncomeService(IncomeRepository incomeRepository) {
+        this.incomeRepository = incomeRepository;
     }
 
-    // Save or update income
-    public Income saveIncome(Income income) {
-        return repo.save(income);
+    public Income getIncome(User user, int year, int month) {
+        return incomeRepository.findByUserAndYearAndMonth(user, year, month);
     }
 
-    // Get income for a specific month/year
-    public Income getIncome(int year, int month) {
-        return repo.findByYearAndMonth(year, month)
-                .orElse(null);
+    public void saveIncome(Income income) {
+        incomeRepository.save(income);
     }
 }

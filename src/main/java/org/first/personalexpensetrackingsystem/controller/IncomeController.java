@@ -1,7 +1,10 @@
 package org.first.personalexpensetrackingsystem.controller;
 
 import org.first.personalexpensetrackingsystem.model.Income;
+import org.first.personalexpensetrackingsystem.model.User;
+import org.first.personalexpensetrackingsystem.repository.UserRepository;
 import org.first.personalexpensetrackingsystem.service.IncomeService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IncomeController {
 
     private final IncomeService incomeService;
+    private final UserRepository userRepository;
 
-    public IncomeController(IncomeService incomeService) {
+    public IncomeController(IncomeService incomeService, UserRepository userRepository) {
         this.incomeService = incomeService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/income/save")
@@ -21,19 +26,21 @@ public class IncomeController {
             @RequestParam int year,
             @RequestParam Double amount
     ) {
-
-        // SAFETY: fallback if month is missing (prevents 400 error)
         if (month == null) {
             month = 1;
         }
 
-        Income existing = incomeService.getIncome(year, month);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Income existing = incomeService.getIncome(currentUser, year, month);
 
         if (existing != null) {
             existing.setAmount(amount);
             incomeService.saveIncome(existing);
         } else {
-            Income income = new Income(year, month, amount);
+            Income income = new Income(year, month, amount, currentUser);
             incomeService.saveIncome(income);
         }
 

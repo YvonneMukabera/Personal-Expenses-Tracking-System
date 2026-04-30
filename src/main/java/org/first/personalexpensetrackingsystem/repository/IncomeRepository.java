@@ -1,11 +1,11 @@
 package org.first.personalexpensetrackingsystem.repository;
 
 import org.first.personalexpensetrackingsystem.model.Income;
+import org.first.personalexpensetrackingsystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
+@Repository
 public interface IncomeRepository extends JpaRepository<Income, Long> {
-
-    Optional<Income> findByYearAndMonth(int year, int month);
+    Income findByUserAndYearAndMonth(User user, int year, int month);
 }

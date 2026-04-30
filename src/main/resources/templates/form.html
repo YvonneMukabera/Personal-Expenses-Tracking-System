@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Expense</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Expense Entry</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<!-- SIDEBAR (ONLY NEW PART) -->
-<div class="sidebar">
-        <div class="sdbr">
-            <!--     <h3 class="sidebar-title">Menu</h3> -->
-            <a th:href="@{/(page=${page})}" class="sidebar-link">
-                Expenses
-            </a>
-
-            <a th:href="@{/dashboard}" class="sidebar-link">
-                Dashboard
-            </a>
-
-            <!-- ADD EXPENSE -->
-            <a th:href="@{/new(page=${currentPage})}" class="sidebar-link active">
-                Add Expense
-            </a>
-            <a th:href="@{/about}"
-               class="sidebar-link">
-                About
-            </a>
+<div class="layout">
+    <div class="sidebar">
+        <div class="user-profile-box">
+            <div class="avatar-circle" th:text="${#authentication.name != null ? #strings.substring(#authentication.name,0,1).toUpperCase() : 'U'}">U</div>
+            <div class="user-details"><span class="user-name-label" th:text="${#authentication.name}">User</span></div>
         </div>
+        <nav class="sdbr">
+            <a th:href="@{/(page=${page})}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
+            <a th:href="@{/dashboard}" class="sidebar-link" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a th:href="@{/new(page=${page}, returnUrl=${returnUrl})}" class="sidebar-link" th:classappend="${activePage == 'new' ? 'active' : ''}">Add Expense</a>
+            <a th:href="@{/about}" class="sidebar-link" th:classappend="${activePage == 'about' ? 'active' : ''}">About</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <form th:action="@{/logout}" method="post"><button type="submit" class="logout-action-btn">Sign Out</button></form>
+        </div>
+    </div>
 
+    <div class="main-content">
+        <h2 class="page-title" th:text="${expense.id == null ? 'New Expense' : 'Edit Expense'}">Form</h2>
+        <div class="form-container animate-slideUp">
+            <div class="card form-card">
+                <form th:action="@{/save}" th:object="${expense}" method="post">
+                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" name="page" th:value="${page}" />
+                    <input type="hidden" name="returnUrl" th:value="${returnUrl}" />
+                    <div class="form-group"><label>Title</label><input type="text" th:field="*{title}" required></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Category</label><input type="text" th:field="*{category}" required></div>
+                        <div class="form-group"><label>Date</label><input type="date" th:field="*{date}" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Quantity</label><input type="number" th:field="*{amount}" required></div>
+                        <div class="form-group"><label>Unit Cost (FRW)</label><input type="number" th:field="*{unitCost}" step="1" min="0" required></div>
+                    </div>
+                    <button type="submit" class="btn-submit-main">Save Transaction</button>
+                    <a th:href="${returnUrl}" class="btn-cancel">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-<h2 class="page-title">Add Expense</h2>
-
-<div class="form-container">
-
-    <form th:action="@{/save}" th:object="${expense}" method="post">
-
-        <input type="hidden" th:field="*{id}" />
-        <input type="hidden" name="page" th:value="${page}" />
-        <input type="text" th:field="*{title}" placeholder="Title"/>
-        <input type="text" th:field="*{category}" placeholder="Category"/>
-        <input type="number" th:field="*{amount}" placeholder="Amount"/>
-        <input type="number" th:field="*{unitCost}" placeholder="Unit Cost"/>
-        <input type="date" th:field="*{date}"/>
-
-        <button type="submit">Save</button>
-
-    </form>
-
-</div>
-
 </body>
 </html>
