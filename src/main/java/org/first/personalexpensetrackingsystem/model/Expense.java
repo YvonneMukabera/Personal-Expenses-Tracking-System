@@ -1,6 +1,8 @@
 package org.first.personalexpensetrackingsystem.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 @Entity
@@ -15,6 +17,7 @@ public class Expense {
     private Double amount;
     private Double unitCost;
     private String category;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
     @ManyToOne

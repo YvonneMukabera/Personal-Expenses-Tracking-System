@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Tracking System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="landing-page">
+<header class="landing-nav">
+    <a th:href="@{/}" class="landing-brand">
+        <span>Personal Expense Tracker</span>
+    </a>
+    <div class="landing-nav-actions">
+        <a th:href="@{/login}" class="landing-link">Sign In</a>
+        <a th:href="@{/register}" class="landing-btn">Create Account</a>
+    </div>
+</header>
+
+<main>
+    <section class="landing-hero">
+        <div class="landing-hero-copy">
+            <span class="section-kicker">Personal Finance Management</span>
+            <h1>A clear way to manage expenses, income, and balance.</h1>
+            <p>
+                Personal Expense Tracking System helps members record daily spending, set monthly income,
+                review dashboard summaries, and export expense records in Rwandan francs.
+            </p>
+            <div class="landing-actions">
+                <a th:href="@{/register}" class="landing-primary">Start Tracking</a>
+                <a href="#system-details" class="landing-secondary">Learn More</a>
+            </div>
+            <div class="landing-note">Already a member? Use the Sign In link at the top.</div>
+        </div>
+
+        <div class="landing-preview" aria-label="System preview">
+            <div class="preview-header">
+                <span></span>
+                <strong>Member Dashboard Preview</strong>
+            </div>
+            <div class="preview-metrics">
+                <div><span>Monthly Income</span><strong>450,000 FRW</strong></div>
+                <div><span>Total Expenses</span><strong>187,500 FRW</strong></div>
+                <div><span>Available Balance</span><strong>262,500 FRW</strong></div>
+            </div>
+            <div class="preview-table">
+                <div><span>No 1</span><strong>Transport</strong><em>12,000 FRW</em></div>
+                <div><span>No 2</span><strong>Groceries</strong><em>45,000 FRW</em></div>
+                <div><span>No 3</span><strong>Internet</strong><em>18,000 FRW</em></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="landing-about" id="system-details">
+        <div>
+            <span class="section-kicker">About The System</span>
+            <h2>Built for members who need practical financial control.</h2>
+            <p>
+                The system is not a public record book. Each member signs in to manage their own expenses,
+                income, dashboard summaries, filters, and CSV exports. The goal is to make personal finance
+                easier to review without complicated accounting tools.
+            </p>
+            <div class="landing-facts">
+                <span>Secure access</span>
+                <span>FRW currency</span>
+                <span>20 records per page</span>
+                <span>CSV export</span>
+            </div>
+        </div>
+
+        <div class="landing-feature-list">
+            <div><strong>Record expenses</strong><span>Add title, category, quantity, unit cost, total, and date for each transaction.</span></div>
+            <div><strong>Set monthly income</strong><span>Save income for a selected month and compare it with spending.</span></div>
+            <div><strong>Review insights</strong><span>Use dashboard cards, charts, and monthly or yearly summaries.</span></div>
+            <div><strong>Find records quickly</strong><span>Filter expenses by keyword, category, year, or month.</span></div>
+            <div><strong>Keep lists organized</strong><span>Pagination and row numbering keep long expense lists easy to follow.</span></div>
+            <div><strong>Export reports</strong><span>Download filtered expenses as CSV when you need an offline report.</span></div>
+        </div>
+    </section>
+
+    <section class="landing-process">
+        <div>
+            <span class="section-kicker">How Members Use It</span>
+            <h2>From entry to insight in four steps.</h2>
+        </div>
+        <div class="landing-steps">
+            <div><span>1</span><strong>Create an account</strong><p>Register once, then sign in whenever you need to manage your records.</p></div>
+            <div><span>2</span><strong>Add expenses</strong><p>Capture daily spending with category, amount, unit cost, and date.</p></div>
+            <div><span>3</span><strong>Save income</strong><p>Enter monthly income so the dashboard can calculate your balance.</p></div>
+            <div><span>4</span><strong>Review and export</strong><p>Check charts, filter records, and download CSV reports when needed.</p></div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

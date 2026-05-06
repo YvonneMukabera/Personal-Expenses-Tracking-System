@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class IncomeController {
@@ -24,7 +25,8 @@ public class IncomeController {
     public String saveIncome(
             @RequestParam(required = false) Integer month,
             @RequestParam int year,
-            @RequestParam Double amount
+            @RequestParam Double amount,
+            RedirectAttributes redirectAttributes
     ) {
         if (month == null) {
             month = 1;
@@ -44,6 +46,7 @@ public class IncomeController {
             incomeService.saveIncome(income);
         }
 
+        redirectAttributes.addFlashAttribute("successMessage", "Income saved successfully.");
         return "redirect:/dashboard?month=" + month + "&year=" + year;
     }
 }

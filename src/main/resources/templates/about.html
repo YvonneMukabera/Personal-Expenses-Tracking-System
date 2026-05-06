@@ -2,12 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Personal Expense Tracker</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="layout">
+    <button type="button" class="mobile-menu-toggle" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="sidebar-overlay"></div>
     <div class="sidebar">
         <div class="user-profile-box">
             <div class="avatar-circle"
@@ -19,8 +24,8 @@
             </div>
         </div>
         <nav class="sdbr">
-            <a th:href="@{/}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
             <a th:href="@{/dashboard}" class="sidebar-link" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a th:href="@{/expenses}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
             <a th:href="@{/new(returnUrl=${currentUrl})}" class="sidebar-link" th:classappend="${activePage == 'new' ? 'active' : ''}">Add Expense</a>
             <a th:href="@{/about}" class="sidebar-link" th:classappend="${activePage == 'about' ? 'active' : ''}">About</a>
         </nav>
@@ -28,99 +33,180 @@
             <form th:action="@{/logout}" method="post"><button type="submit" class="logout-action-btn">Sign Out</button></form>
         </div>
     </div>
-    <div class="main-content">
-        <h2 class="page-title">About This System</h2>
 
-        <div class="about-grid animate-fadeIn">
-            <div class="card about-card about-main-card">
-                <span class="section-kicker">Smart Personal Finance</span>
-                <h3>Track income, spending, and balance in FRW with confidence</h3>
-                <p class="about-lead">
-                    This system gives users a clear, secure way to record expenses, manage monthly income,
-                    and compare financial performance across months and years.
-                </p>
-                <div class="data-chip-row">
-                    <span class="data-chip">Expenses</span>
-                    <span class="data-chip">Income</span>
-                    <span class="data-chip">Dashboard</span>
-                    <span class="data-chip">FRW</span>
+    <main class="main-content">
+        <div class="about-shell animate-fadeIn">
+            <section class="about-hero">
+                <div>
+                    <span class="section-kicker">System Profile</span>
+                    <h2>Personal Expense Tracking System</h2>
+                    <p>
+                        A secure finance workspace for recording day-to-day spending, managing monthly income,
+                        and reviewing financial performance in Rwandan francs.
+                    </p>
                 </div>
-            </div>
-
-            <div class="card about-card">
-                <h3>Project Scope</h3>
-                <ul class="about-list">
-                    <li>Secure account registration and login.</li>
-                    <li>Expense records with title, category, quantity, unit cost, date, and total.</li>
-                    <li>Monthly and yearly dashboard filters with histogram charts.</li>
-                    <li>Income, expenses, and balance summaries in Rwandan francs.</li>
-                </ul>
-            </div>
-
-            <div class="card about-card">
-                <h3>Database Structure</h3>
-                <p class="about-muted">The active backend model tables are aligned with the project architecture.</p>
-                <div class="table-responsive">
-                    <table class="modern-table compact-table">
-                        <thead>
-                        <tr>
-                            <th>Model</th>
-                            <th>Table</th>
-                            <th>Purpose</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="text-bold">User</td>
-                            <td>users</td>
-                            <td>Stores login and profile details.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-bold">Expense</td>
-                            <td>expense</td>
-                            <td>Stores spending records linked to a user.</td>
-                        </tr>
-                        <tr>
-                            <td class="text-bold">Income</td>
-                            <td>income</td>
-                            <td>Stores monthly income linked to a user.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card about-card">
-                <h3>Project Team & Support</h3>
-                <p class="about-muted">
-                    The system is maintained by a small team focused on reliable expense tracking,
-                    clean financial summaries, and practical support for users.
-                </p>
-                <div class="contact-format">
-                    <div class="contact-row">
-                        <span>Owners</span>
-                        <strong>Yvonne and Enock</strong>
-                    </div>
-                    <div class="contact-row">
-                        <span>Email</span>
-                        <strong>mukabera255@gmail.com</strong>
-                    </div>
-                    <div class="contact-row">
-                        <span>Contact</span>
-                        <strong>+250 793 835 394</strong>
-                    </div>
-                    <div class="contact-row">
-                        <span>Office hours</span>
-                        <strong>Monday to Friday, 9:00 AM - 5:00 PM</strong>
-                    </div>
-                    <div class="contact-row contact-message">
-                        <span>Support note</span>
-                        <strong>Include your name, the page affected, and a short description of your request.</strong>
+                <div class="system-status-card">
+                    <span class="status-dot"></span>
+                    <div>
+                        <strong>Operational</strong>
+                        <small>Dashboard, expenses, income, pagination, filters, and exports are active.</small>
                     </div>
                 </div>
+            </section>
+
+            <section class="system-metrics">
+                <div class="metric-tile">
+                    <span>Currency</span>
+                    <strong>FRW</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Records</span>
+                    <strong>20 / page</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Access</span>
+                    <strong>Login required</strong>
+                </div>
+                <div class="metric-tile">
+                    <span>Export</span>
+                    <strong>CSV ready</strong>
+                </div>
+            </section>
+
+            <div class="about-tabs" role="tablist" aria-label="About sections">
+                <button class="about-tab active" type="button" data-about-tab="overview">Overview</button>
+                <button class="about-tab" type="button" data-about-tab="features">Features</button>
+                <button class="about-tab" type="button" data-about-tab="data">Data</button>
+                <button class="about-tab" type="button" data-about-tab="support">Support</button>
             </div>
+
+            <section class="about-panel active" id="about-overview" data-about-panel="overview">
+                <div class="about-section-grid">
+                    <div class="about-card about-story">
+                        <h3>What the system does</h3>
+                        <p>
+                            The application helps a user build a reliable picture of personal cash flow.
+                            Expenses are recorded with category, quantity, unit cost, total, and date.
+                            Income is stored by month, then compared against spending on the dashboard.
+                        </p>
+                        <p>
+                            The focus is practical: quick entry, clean transaction lists, useful filters,
+                            monthly and yearly summaries, and simple exports for reporting.
+                        </p>
+                    </div>
+
+                    <div class="about-card">
+                        <h3>Current Workflow</h3>
+                        <ol class="workflow-list">
+                            <li><span>1</span><strong>Sign in</strong><small>Each user works with their own finance records.</small></li>
+                            <li><span>2</span><strong>Add expenses</strong><small>Capture title, category, quantity, cost, and date.</small></li>
+                            <li><span>3</span><strong>Set income</strong><small>Save monthly income for accurate balance tracking.</small></li>
+                            <li><span>4</span><strong>Review results</strong><small>Use dashboard charts, tables, filters, and CSV export.</small></li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-panel" id="about-features" data-about-panel="features">
+                <div class="feature-grid">
+                    <div class="feature-item"><strong>Expense management</strong><span>Add, edit, delete, paginate, filter, and export records.</span></div>
+                    <div class="feature-item"><strong>Financial dashboard</strong><span>Monthly and yearly views for income, expenses, and balance.</span></div>
+                    <div class="feature-item"><strong>Numbered records</strong><span>Expense table numbering continues correctly across pages.</span></div>
+                    <div class="feature-item"><strong>Secure sessions</strong><span>Authentication protects system pages and user data.</span></div>
+                    <div class="feature-item"><strong>FRW formatting</strong><span>Amounts are presented for Rwandan franc-based tracking.</span></div>
+                    <div class="feature-item"><strong>Responsive layout</strong><span>Tables, cards, and support details adapt to smaller screens.</span></div>
+                </div>
+            </section>
+
+            <section class="about-panel" id="about-data" data-about-panel="data">
+                <div class="about-section-grid">
+                    <div class="about-card">
+                        <h3>Data Model</h3>
+                        <div class="table-responsive">
+                            <table class="modern-table compact-table">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Model</th>
+                                    <th>Table</th>
+                                    <th>Purpose</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="counter-cell">1</td>
+                                    <td class="text-bold">User</td>
+                                    <td>users</td>
+                                    <td>Stores account, login, and profile details.</td>
+                                </tr>
+                                <tr>
+                                    <td class="counter-cell">2</td>
+                                    <td class="text-bold">Expense</td>
+                                    <td>expense</td>
+                                    <td>Stores spending records linked to a user.</td>
+                                </tr>
+                                <tr>
+                                    <td class="counter-cell">3</td>
+                                    <td class="text-bold">Income</td>
+                                    <td>income</td>
+                                    <td>Stores monthly income linked to a user.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="about-card">
+                        <h3>Data Handling</h3>
+                        <ul class="system-check-list">
+                            <li>Expense records are connected to the signed-in user.</li>
+                            <li>Dashboard calculations use saved expenses and monthly income.</li>
+                            <li>Pagination keeps the list readable as records grow.</li>
+                            <li>Year and month filters help users review specific periods.</li>
+                            <li>CSV export supports offline review and simple reporting.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-panel" id="about-support" data-about-panel="support">
+                <div class="about-section-grid">
+                    <div class="about-card">
+                        <h3>Support Contacts</h3>
+                        <div class="contact-format refined-contact">
+                            <div class="contact-row">
+                                <span>System owners</span>
+                                <strong>Yvonne and Enock</strong>
+                            </div>
+                            <div class="contact-row">
+                                <span>Email</span>
+                                <strong>mukabera255@gmail.com</strong>
+                            </div>
+                            <div class="contact-row">
+                                <span>Phone</span>
+                                <strong>+250 793 835 394</strong>
+                            </div>
+                            <div class="contact-row">
+                                <span>Availability</span>
+                                <strong>Monday to Friday, 9:00 AM - 5:00 PM</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-card">
+                        <h3>When Requesting Help</h3>
+                        <ul class="system-check-list">
+                            <li>Include the page affected: Dashboard, Expenses, Add Expense, or Login.</li>
+                            <li>Share the action you were trying to complete.</li>
+                            <li>Include the month, year, or category if the issue is about filtering.</li>
+                            <li>Do not send passwords or private login details in support messages.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
 </div>
+<script th:src="@{/js/app.js}"></script>
 </body>
 </html>

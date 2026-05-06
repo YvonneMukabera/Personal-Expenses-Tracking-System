@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Expense Tracker</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -8,6 +10,10 @@
 </head>
 <body>
 <div class="layout">
+    <button type="button" class="mobile-menu-toggle" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="sidebar-overlay"></div>
     <div class="sidebar">
         <div class="user-profile-box">
             <div class="avatar-circle"
@@ -19,8 +25,8 @@
             </div>
         </div>
         <nav class="sdbr">
-            <a th:href="@{/}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
             <a th:href="@{/dashboard}" class="sidebar-link" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a th:href="@{/expenses}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
             <a th:href="@{/new(returnUrl=${currentUrl})}" class="sidebar-link" th:classappend="${activePage == 'new' ? 'active' : ''}">Add Expense</a>
             <a th:href="@{/about}" class="sidebar-link" th:classappend="${activePage == 'about' ? 'active' : ''}">About</a>
         </nav>
@@ -31,6 +37,7 @@
 
     <div class="main-content">
         <h2 class="page-title">Financial Insights</h2>
+        <div th:if="${successMessage}" class="success-msg" th:text="${successMessage}">Saved successfully.</div>
         <div class="action-grid animate-fadeIn">
             <div class="card">
                 <h3>Monthly Filter</h3>
@@ -59,9 +66,39 @@
         </div>
         <div class="period-label" th:text="'Showing: ' + ${periodLabel}">Showing: Period</div>
         <div class="summary-cards animate-slideUp">
-            <div class="card income-card"><span>Total Income</span><h2 th:text="${#numbers.formatDecimal(totalIncome, 0, 'COMMA', 0, 'POINT')} + ' FRW'">0 FRW</h2></div>
-            <div class="card expense-card"><span>Total Expenses</span><h2 th:text="${#numbers.formatDecimal(totalExpenses, 0, 'COMMA', 0, 'POINT')} + ' FRW'">0 FRW</h2></div>
-            <div class="card balance-card"><span>Balance</span><h2 th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 0, 'POINT')} + ' FRW'" th:classappend="${balance < 0 ? 'negative' : 'positive'}">0 FRW</h2></div>
+            <div class="card insight-card income-card">
+                <div class="insight-card-header">
+                    <div>
+                        <span class="insight-label">Total Income</span>
+                        <small th:text="${periodLabel}">Period</small>
+                    </div>
+                    <span class="insight-icon">IN</span>
+                </div>
+                <h2 th:text="${#numbers.formatDecimal(totalIncome, 0, 'COMMA', 0, 'POINT')} + ' FRW'">0 FRW</h2>
+                <div class="insight-footer positive">Money received</div>
+            </div>
+            <div class="card insight-card expense-card">
+                <div class="insight-card-header">
+                    <div>
+                        <span class="insight-label">Total Expenses</span>
+                        <small th:text="${periodLabel}">Period</small>
+                    </div>
+                    <span class="insight-icon">EX</span>
+                </div>
+                <h2 th:text="${#numbers.formatDecimal(totalExpenses, 0, 'COMMA', 0, 'POINT')} + ' FRW'">0 FRW</h2>
+                <div class="insight-footer negative">Money spent</div>
+            </div>
+            <div class="card insight-card balance-card">
+                <div class="insight-card-header">
+                    <div>
+                        <span class="insight-label">Balance</span>
+                        <small th:text="${periodLabel}">Period</small>
+                    </div>
+                    <span class="insight-icon">FRW</span>
+                </div>
+                <h2 th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 0, 'POINT')} + ' FRW'" th:classappend="${balance < 0 ? 'negative' : 'positive'}">0 FRW</h2>
+                <div class="insight-footer" th:classappend="${balance < 0 ? ' negative' : ' positive'}" th:text="${balance < 0 ? 'Over budget' : 'Available balance'}">Available balance</div>
+            </div>
         </div>
         <div class="chart-container card animate-fadeIn">
             <h3 th:text="${chartTitle}">FRW Histogram</h3>
@@ -76,6 +113,7 @@
                 <table class="modern-table">
                     <thead>
                     <tr>
+                        <th class="counter-cell">No</th>
                         <th>Title</th>
                         <th>Category</th>
                         <th>Quantity</th>
@@ -86,9 +124,16 @@
                     </thead>
                     <tbody>
                     <tr th:if="${#lists.isEmpty(expenses)}">
-                        <td colspan="6" class="empty-state">No expenses recorded for this month.</td>
+                        <td colspan="7" class="empty-state">
+                            <div class="empty-state-content">
+                                <strong>No expenses recorded for this month.</strong>
+                                <span>Add a transaction or select a different period.</span>
+                                <a th:href="@{/new(returnUrl=${currentUrl})}" class="btn-add-new">+ Add Expense</a>
+                            </div>
+                        </td>
                     </tr>
-                    <tr th:each="expense : ${expenses}">
+                    <tr th:each="expense, expenseStat : ${expenses}">
+                        <td class="counter-cell" th:text="${expenseStat.count}">1</td>
                         <td class="text-bold" th:text="${expense.title}">Title</td>
                         <td><span class="cat-badge" th:text="${expense.category}">Category</span></td>
                         <td class="numeric-cell" th:text="${expense.amount}">0</td>
@@ -109,6 +154,7 @@
                 <table class="modern-table">
                     <thead>
                     <tr>
+                        <th class="counter-cell">No</th>
                         <th>Month</th>
                         <th>Income (FRW)</th>
                         <th>Expenses (FRW)</th>
@@ -117,6 +163,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="monthName, monthStat : ${chartLabels}">
+                        <td class="counter-cell" th:text="${monthStat.count}">1</td>
                         <td class="text-bold" th:text="${monthName}">Jan</td>
                         <td class="money-cell" th:text="${#numbers.formatDecimal(chartIncomeData[monthStat.index], 0, 'COMMA', 0, 'POINT')} + ' FRW'">0 FRW</td>
                         <td class="money-cell" th:text="${#numbers.formatDecimal(chartExpenseData[monthStat.index], 0, 'COMMA', 0, 'POINT')} + ' FRW'">0 FRW</td>

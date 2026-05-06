@@ -16,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .rememberMeParameter("remember-me")
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/")
                         .permitAll()
                 );
         return http.build();

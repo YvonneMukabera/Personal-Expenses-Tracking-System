@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Entry</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="layout">
+    <button type="button" class="mobile-menu-toggle" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="sidebar-overlay"></div>
     <div class="sidebar">
         <div class="user-profile-box">
             <div class="avatar-circle" th:text="${#authentication.name != null ? #strings.substring(#authentication.name,0,1).toUpperCase() : 'U'}">U</div>
             <div class="user-details"><span class="user-name-label" th:text="${#authentication.name}">User</span></div>
         </div>
         <nav class="sdbr">
-            <a th:href="@{/(page=${page})}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
             <a th:href="@{/dashboard}" class="sidebar-link" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">Dashboard</a>
+            <a th:href="@{/expenses}" class="sidebar-link" th:classappend="${activePage == 'expenses' ? 'active' : ''}">Expenses</a>
             <a th:href="@{/new(page=${page}, returnUrl=${returnUrl})}" class="sidebar-link" th:classappend="${activePage == 'new' ? 'active' : ''}">Add Expense</a>
             <a th:href="@{/about}" class="sidebar-link" th:classappend="${activePage == 'about' ? 'active' : ''}">About</a>
         </nav>

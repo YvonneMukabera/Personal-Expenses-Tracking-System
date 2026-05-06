@@ -2,13 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="auth-page">
 <div class="auth-card animate-slideUp">
-    <img th:src="@{/images/logo.png}" class="auth-logo" alt="Logo">
-    <h2>Sign In</h2>
+    <div class="auth-brand">
+        <img th:src="@{/images/logo.png}" class="auth-logo" alt="Expense Tracker Logo">
+        <span>Personal Expense Tracker</span>
+    </div>
+    <h2>Welcome Back</h2>
+    <p class="auth-subtitle">Sign in to review your expenses, income, and FRW balance.</p>
 
     <div th:if="${param.error}" class="error-msg">Invalid username or password.</div>
     <div th:if="${param.registered}" class="success-msg">Registration successful! Please login.</div>
